@@ -12,7 +12,7 @@ def writing_file():
 
 
 def letters():
-    for i in range(97, 123):
+    for i in range(97, 107):
         print(chr(i))
         print(f'letters time before sleep: {time.perf_counter()}')
         time.sleep(1)
@@ -21,7 +21,7 @@ def letters():
 
 def numbers():
     time.sleep(0.5)
-    for i in range(1, 26):
+    for i in range(1, 11):
         print(f'\x1b[8;36;40m {i} \x1b[0m')
         print(f'\x1b[8;36;40m numbers time before sleep: {time.perf_counter()} \x1b[0m')
         time.sleep(1)
