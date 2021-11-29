@@ -37,13 +37,13 @@ class MyBill(object):
         self.load_csv()
         self.total_dict = dict()
         self.get_total()
-        print(self.total_dict)
 
     def load_csv(self):
         with open(self.path, 'r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for line in csv_reader:
                 self.bill_list.append(line)
+            self.bill_list = self.bill_list[1:]
 
     @staticmethod
     def get_date(bill_dict: dict):
@@ -77,8 +77,8 @@ class MyBill(object):
 
 
 if __name__ == "__main__":
-    # files = get_files("/Users/mac/Desktop/learning/ZiCeBill")
-    # merge_file(files)
+    files = get_files("/Users/mac/Desktop/learning/ZiCeBill")
+    merge_file(files)
     a = MyBill('FineBill.csv')
     a.csv_sorted_date()
     a.csv_sorted_total()
