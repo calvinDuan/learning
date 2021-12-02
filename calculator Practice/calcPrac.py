@@ -1,8 +1,7 @@
 import sys
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QListWidgetItem
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtCore import Qt
+from PyQt5 import QtCore
 from PyQt5.uic import loadUi
 
 
@@ -48,6 +47,8 @@ class Win(QMainWindow):
 
         self.value_signal.connect(self.get_value)
         self.sign_signal.connect(self.calculate)
+
+        self._ui.step_screen.itemDoubleClicked.connect(self.back_track)
 
         self.show()
 
@@ -117,16 +118,22 @@ class Win(QMainWindow):
             if self.sign_list[-2] == 'add':
                 step = f'{self.ans} + {self.current_value}'
                 self.ans += self.current_value
+                if round(self.ans) == self.ans:
+                    self.ans = round(self.ans)
                 self.current_value = 0
                 self.ans_list.append(self.ans)
             elif self.sign_list[-2] == 'minus':
                 step = f'{self.ans} - {self.current_value}'
                 self.ans -= self.current_value
+                if round(self.ans) == self.ans:
+                    self.ans = round(self.ans)
                 self.current_value = 0
                 self.ans_list.append(self.ans)
             elif self.sign_list[-2] == 'mult':
                 step = f'{self.ans} * {self.current_value}'
                 self.ans *= self.current_value
+                if round(self.ans) == self.ans:
+                    self.ans = round(self.ans)
                 self.current_value = 0
                 self.ans_list.append(self.ans)
             elif self.sign_list[-2] == 'div':
@@ -134,6 +141,8 @@ class Win(QMainWindow):
                     step = f'{self.ans} / {self.current_value}'
                     self.ans /= self.current_value
                     self.ans = round(self.ans, 10)
+                    if round(self.ans) == self.ans:
+                        self.ans = round(self.ans)
                     self.current_value = 0
                     self.ans_list.append(self.ans)
             elif self.sign_list[-2] == 'mod':
@@ -163,6 +172,18 @@ class Win(QMainWindow):
                 else:
                     self._ui.output_screen.setText(self._ui.output_screen.text()[1:])
 
+    def back_track(self):
+        start_step = self._ui.step_screen.currentRow()
+        end_step = self._ui.step_screen.count()
+        for step in range(start_step+1, end_step):
+            self._ui.step_screen.takeItem(start_step+1)
+        self.ans_list = self.ans_list[:start_step+2]
+        print(self.ans_list)
+        self.current_value = 0
+        self.ans = self.ans_list[-1]
+        self._ui.output_screen.setText(str(self.ans))
+
+
     def clear_value(self):
         if not self.is_clear:
             self.is_clear = True
@@ -189,6 +210,8 @@ class Win(QMainWindow):
                     btn.setStyleSheet('background-color: rgb(246, 170, 11);'
                                       'border: 2px solid rgb(255, 255, 255);'
                                       'border-radius: 10px;')
+
+
 
 
 if __name__ == "__main__":
